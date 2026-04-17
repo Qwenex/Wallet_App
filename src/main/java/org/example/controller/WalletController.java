@@ -1,7 +1,7 @@
 package org.example.controller;
 
-import org.example.dto.Request;
-import org.example.dto.Response;
+import org.example.dto.WalletRequest;
+import org.example.dto.WalletResponse;
 import org.example.entity.Wallet;
 import org.example.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,42 +25,42 @@ public class WalletController {
     }
 
     @PostMapping("/wallets")
-    public ResponseEntity<Response> createWallet(@RequestParam BigDecimal balance) {
+    public ResponseEntity<WalletResponse> createWallet(@RequestParam BigDecimal balance) {
         Wallet createdWallet = walletService.createWallet(balance);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new Response(createdWallet.getId(), createdWallet.getBalance()));
+                .body(new WalletResponse(createdWallet.getId(), createdWallet.getBalance()));
     }
 
     @PostMapping("/wallet")
-    public ResponseEntity<Response> operation(@RequestBody Request request) {
-        Wallet updatedWallet = walletService.operation(request.id(), request.type(), request.amount());
-        return ResponseEntity.ok(new Response(updatedWallet.getId(), updatedWallet.getBalance()));
+    public ResponseEntity<WalletResponse> operation(@RequestBody WalletRequest request) {
+        Wallet updatedWallet = walletService.operation(request.walletId(), request.operationType(), request.amount());
+        return ResponseEntity.ok(new WalletResponse(updatedWallet.getId(), updatedWallet.getBalance()));
     }
 
     @GetMapping("/wallets/{walletId}")
-    public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID id) {
-        BigDecimal balance = walletService.getWallet(id).getBalance();
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID walletId) {
+        BigDecimal balance = walletService.getWallet(walletId).getBalance();
         return ResponseEntity.ok(balance);
     }
 
     @GetMapping("/wallets")
-    public ResponseEntity<List<Response>> getAllWallets() {
-        List<Response> wallets = walletService.getAllWallets().stream()
-                .map(w -> new Response(w.getId(), w.getBalance()))
+    public ResponseEntity<List<WalletResponse>> getAllWallets() {
+        List<WalletResponse> wallets = walletService.getAllWallets().stream()
+                .map(w -> new WalletResponse(w.getId(), w.getBalance()))
                 .toList();
         return ResponseEntity.ok(wallets);
     }
 
     @PutMapping("/wallets/{walletId}")
-    public ResponseEntity<Response> updateBalance(@PathVariable UUID id,
-                                                  @RequestParam BigDecimal balance) {
-        Wallet updated = walletService.updateWalletBalance(id, balance);
-        return ResponseEntity.ok(new Response(updated.getId(), updated.getBalance()));
+    public ResponseEntity<WalletResponse> updateBalance(@PathVariable UUID walletId,
+                                                        @RequestParam BigDecimal balance) {
+        Wallet updated = walletService.updateWalletBalance(walletId, balance);
+        return ResponseEntity.ok(new WalletResponse(updated.getId(), updated.getBalance()));
     }
 
     @DeleteMapping("/wallets/{walletId}")
-    public ResponseEntity<Void> deleteWallet(@PathVariable UUID id) {
-        walletService.deleteWallet(id);
+    public ResponseEntity<Void> deleteWallet(@PathVariable UUID walletId) {
+        walletService.deleteWallet(walletId);
         return ResponseEntity.noContent().build();
     }
 }

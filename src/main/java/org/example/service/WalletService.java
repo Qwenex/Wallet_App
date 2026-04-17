@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.entity.Wallet;
+import org.example.enums.OperationType;
 import org.example.exception.InsufficientFundsException;
 import org.example.exception.WalletNotFoundException;
 import org.example.repository.WalletRepository;
