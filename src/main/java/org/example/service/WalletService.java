@@ -1,6 +1,8 @@
 package org.example.service;
 
 import org.example.entity.Wallet;
+import org.example.exception.InsufficientFundsException;
+import org.example.exception.WalletNotFoundException;
 import org.example.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class WalletService {
     @Transactional
     public Wallet getWallet(UUID id) {
         return walletRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Wallet not found: " + id));
+                new WalletNotFoundException("Кошелек не найден: " + id));
     }
 
     @Transactional
@@ -47,7 +49,7 @@ public class WalletService {
     @Transactional
     public void deleteWallet(UUID id) {
         if (!walletRepository.existsById(id))
-            throw new RuntimeException("Wallet not found: " + id);
+            throw new WalletNotFoundException("Кошелек не найден: " + id);
         walletRepository.deleteById(id);
     }
 
@@ -58,8 +60,8 @@ public class WalletService {
             case DEPOSIT -> wallet.setBalance(wallet.getBalance().add(amount));
             case WITHDRAW -> {
                 if (wallet.getBalance().compareTo(amount) < 0) {
-                    throw new RuntimeException(String.format(
-                            "Недостаточно средств для снятия %s в кошельке %s", amount, id));
+                    throw new InsufficientFundsException(String.format(
+                            "Недостаточно средств для снятия %s из кошелька %s", amount, id));
                 }
                 wallet.setBalance(wallet.getBalance().subtract(amount));
             }

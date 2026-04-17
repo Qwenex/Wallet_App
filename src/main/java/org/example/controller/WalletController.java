@@ -38,8 +38,8 @@ public class WalletController {
     }
 
     @GetMapping("/wallets/{walletId}")
-    public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID walletId) {
-        BigDecimal balance = walletService.getWallet(walletId).getBalance();
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID id) {
+        BigDecimal balance = walletService.getWallet(id).getBalance();
         return ResponseEntity.ok(balance);
     }
 
@@ -52,15 +52,15 @@ public class WalletController {
     }
 
     @PutMapping("/wallets/{walletId}")
-    public ResponseEntity<Response> updateBalance(@PathVariable UUID walletId,
+    public ResponseEntity<Response> updateBalance(@PathVariable UUID id,
                                                   @RequestParam BigDecimal balance) {
-        Wallet updated = walletService.updateWalletBalance(walletId, balance);
+        Wallet updated = walletService.updateWalletBalance(id, balance);
         return ResponseEntity.ok(new Response(updated.getId(), updated.getBalance()));
     }
 
     @DeleteMapping("/wallets/{walletId}")
-    public ResponseEntity<Void> deleteWallet(@PathVariable UUID walletId) {
-        walletService.deleteWallet(walletId);
+    public ResponseEntity<Void> deleteWallet(@PathVariable UUID id) {
+        walletService.deleteWallet(id);
         return ResponseEntity.noContent().build();
     }
 }
