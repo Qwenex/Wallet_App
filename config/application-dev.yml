@@ -3,6 +3,8 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
@@ -10,7 +12,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
