@@ -1,14 +1,14 @@
-server:
-  port: 8080
+# prod mode
 spring:
   output:
     ansi:
       enabled: ALWAYS
   datasource:
-    url: jdbc:postgresql://localhost:5432/WalletDB
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
