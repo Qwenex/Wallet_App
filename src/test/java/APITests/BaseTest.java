@@ -7,7 +7,7 @@ import org.example.entity.Wallet;
 import org.example.enums.OperationType;
 import org.example.repository.WalletRepository;
 import org.example.service.WalletService;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +41,7 @@ public abstract class BaseTest {
 
     protected static final String BASE_URL = "/api/v1";
 
-    @BeforeEach
+    @AfterEach
     protected void cleanUpBD() {
         walletRepository.deleteAll();
     }
